@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Device Dashboard</title>
+	<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="www/demo.css">
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="www/js/dataGrid.js"></script>
+	<script type="text/javascript" src="www/js/cgiOperator.js"></script>
+	<script type="text/javascript" src="www/js/index.js"></script>
+</head>
+
+<body class="easyui-layout">
+	<div data-options="region:'west',title:'菜单目录'" style="width:200px;padding:10px;">
+		<ul class="easyui-tree">
+			<li data-options="state:'closed'">
+				<span>设备信息</span>
+				<ul>
+					<li><a id="SystemInfo">系统信息</a></li>
+					<li><a id="AlarmInfo">告警信息</a></li>
+				</ul>
+			</li>
+			<li data-options="state:'closed'">
+				<span>设备配置</span>
+				<ul>
+					<li><a id="NetWorkConfig">接入网管配置</a></li>
+					<li><a id="RadioConfig">射频参数配置</a></li>
+					<li><a id="CarrierConfig">载波参数配置</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div id="CenterBlock" data-options="region:'center',title:'设备管理'">
+		<div style="margin:20px 2;"></div>
+		<table id="dg" class="easyui-datagrid" title="设备数据表" style="width:auto;height:auto" data-options="
+						checkOnSelect:false,
+						selectOnCheck:false,
+						onClickCell: onClickCell,
+						toolbar:'#tb',
+					">
+			<thead>
+				<tr>
+					<th data-options="field:'selectRows',width:40,align:'center',checkbox:true">
+					</th>
+					<!-- <th data-options="field:'rowsIndex',width:40,align:'center'">
+						行号</th> -->
+					<th data-options="field:'paramsIndex',width:80,align:'right'">参数索引</th>
+
+					<th data-options="field:'paramsName',width:240,align:'right'">参数名称</th>
+					<th
+						data-options="field:'paramsCoff',width:80,align:'center',editor:{type:'numberbox',options:{precision:2}}">
+						系数</th>
+					<th data-options="field:'paramsAttr',width:80,align:'center'">属性</th>
+					<th data-options="field:'paramsType',width:80,align:'center'">数据类型</th>
+					<th data-options="field:'paramsValue',width:253,align:'right',editor:{type:'textbox'}">当前数值</th>
+
+				</tr>
+			</thead>
+		</table>
+
+		<div id="tb" style="height:auto">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true"
+				onclick="reload()">刷新</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
+				onclick="edit()">保存</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true"
+				onclick="cancel()">取消</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
+				onclick="getChanges()">查看更改</a>
+			<!--查看已经更改的选项-->
+		</div>
+	</div>
+</body>
+
+</html>
