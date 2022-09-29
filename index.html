@@ -15,64 +15,82 @@
 </head>
 
 <body class="easyui-layout">
-	<div data-options="region:'west',title:'菜单目录'" style="width:200px;padding:10px;">
+	<div data-options="region:'west',title:'Menu directory'" style="width:250px;padding:10px;">
 		<ul class="easyui-tree">
 			<li data-options="state:'closed'">
-				<span>设备信息</span>
+				<span>Device Information</span>
 				<ul>
-					<li><a id="SystemInfo">系统信息</a></li>
-					<li><a id="AlarmInfo">告警信息</a></li>
+					<li><a id="SystemInfo">system </a></li>
+					<li><a id="OptInfo">optical </a></li>
+					<li><a id="AlarmInfo">alarm </a></li>
 				</ul>
 			</li>
 			<li data-options="state:'closed'">
-				<span>设备配置</span>
+				<span>Device Configuration</span>
 				<ul>
-					<li><a id="NetWorkConfig">接入网管配置</a></li>
-					<li><a id="RadioConfig">射频参数配置</a></li>
-					<li><a id="CarrierConfig">载波参数配置</a></li>
+					<li><a id="NetWorkConfig">network </a></li>
+					<li><a id="AlarmConfig">alarm</a></li>
+					<li data-options="state:'closed'">
+					<span>RF configuration</span>
+					<ul>
+						<li><a id="RadioConfigCommon">RF GM </a></li>
+						<li><a id="RadioConfigOne">Channel 1 </a></li>
+						<li><a id="RadioConfigTwo">Channel 2 </a></li>
+						<li><a id="RadioConfigThree">Channel 3 </a></li>
+						<li><a id="RadioConfigFour">Channel 4 </a></li>
+					</ul>
+					</li>
+					<li data-options="state:'closed'">
+					<span>Carrier configuration</span>
+					<ul>
+						<li><a id="CarrierConfigOne">Carrier 1</a></li>
+						<li><a id="CarrierConfigTwo">Carrier 2</a></li>
+					</ul>
+					</li>
 				</ul>
 			</li>
 		</ul>
 	</div>
-	<div id="CenterBlock" data-options="region:'center',title:'设备管理'">
+	<div id="CenterBlock" data-options="region:'center',title:'Equipment management'">
 		<div style="margin:20px 2;"></div>
-		<table id="dg" class="easyui-datagrid" title="设备数据表" style="width:auto;height:auto" data-options="
-						checkOnSelect:false,
-						selectOnCheck:false,
-						onClickCell: onClickCell,
-						toolbar:'#tb',
-					">
-			<thead>
-				<tr>
-					<th data-options="field:'selectRows',width:40,align:'center',checkbox:true">
-					</th>
-					<!-- <th data-options="field:'rowsIndex',width:40,align:'center'">
+				<div style="margin:20px 2;"></div>
+				<div id="tb" style="height:auto">
+					<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true"
+						onclick="reload()">Refresh</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
+						onclick="edit()">Save</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true"
+						onclick="cancel()">Cancel</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
+						onclick="getChanges()">View changes</a>
+				</div>
+				<div style="margin:20px 2;"></div>
+				<table id="dg" class="easyui-datagrid" style="width:auto;height:auto" data-options="
+										checkOnSelect:false,
+										selectOnCheck:false,
+										onClickCell: onClickCell,
+									">
+					<thead>
+						<tr>
+							<th data-options="field:'selectRows',width:40,align:'center',checkbox:true">
+							</th>
+							<!-- <th data-options="field:'rowsIndex',width:40,align:'center'">
 						行号</th> -->
-					<th data-options="field:'paramsIndex',width:80,align:'right'">参数索引</th>
+					<th data-options="field:'paramsIndex',width:80,align:'left'">index</th>
 
-					<th data-options="field:'paramsName',width:240,align:'right'">参数名称</th>
+					<th data-options="field:'paramsName',width:240,align:'left'">name</th>
 					<th
-						data-options="field:'paramsCoff',width:80,align:'center',editor:{type:'numberbox',options:{precision:2}}">
-						系数</th>
-					<th data-options="field:'paramsAttr',width:80,align:'center'">属性</th>
-					<th data-options="field:'paramsType',width:80,align:'center'">数据类型</th>
-					<th data-options="field:'paramsValue',width:253,align:'right',editor:{type:'textbox'}">当前数值</th>
+						data-options="field:'paramsCoff',width:80,align:'left',editor:{type:'numberbox',options:{precision:2}}">
+						coef</th>
+					<th data-options="field:'paramsAttr',width:80,align:'left'">attr</th>
+					<th data-options="field:'paramsType',width:80,align:'left'">type</th>
+					<th data-options="field:'paramsValue',width:253,align:'left',editor:{type:'textbox'}">value</th>
 
 				</tr>
 			</thead>
 		</table>
 
-		<div id="tb" style="height:auto">
-			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true"
-				onclick="reload()">刷新</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
-				onclick="edit()">保存</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true"
-				onclick="cancel()">取消</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
-				onclick="getChanges()">查看更改</a>
-			<!--查看已经更改的选项-->
-		</div>
+
 	</div>
 </body>
 

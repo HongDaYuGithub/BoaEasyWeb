@@ -1,4 +1,3 @@
-
 class ParamsData {
   constructor(index, name, coff, attr, type, value, rows_index) {
     this.index = index;

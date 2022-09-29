@@ -54,7 +54,7 @@ function UpdateGrid() {}
 
 // 更新客户端数据库
 function cancel() {
-  $.messager.confirm("信息提示:", "是否取消勾选?", function (r) {
+  $.messager.confirm("Info:", "Whether to cancel the check?", function (r) {
     if (r) {
       $(":checked").removeAttr("checked");
     }
@@ -72,29 +72,36 @@ function testDrawDataGrid() {
 // 更新客户端数据库
 function edit() {
   endEditing();
-  $.messager.confirm("信息提示:", "请确认提交配置?", function (r) {
-    if (r) {
-      checked = $("#dg").datagrid("getChecked");
-      console.log(checked);
-      var CmdWrite = "";
-      var tmp = 0;
-      for (var i = 0; i < checked.length; i++) {
-        if (checked[i].paramsType != "str") {
-          tmp =
-            parseFloat(checked[i].paramsCoff) *
-            parseFloat(checked[i].paramsValue);
-        } else {
-          tmp = checked[i].paramsValue;
+  $.messager.confirm(
+    "Info:",
+    "Please confirm the submission configuration?",
+    function (r) {
+      if (r) {
+        checked = $("#dg").datagrid("getChecked");
+        console.log(checked);
+        var CmdWrite = "";
+        var tmp = 0;
+        for (var i = 0; i < checked.length; i++) {
+          if (
+            checked[i].paramsType != "str" &&
+            checked[i].paramsType != "dstr"
+          ) {
+            tmp =
+              parseFloat(checked[i].paramsCoff) *
+              parseFloat(checked[i].paramsValue);
+          } else {
+            tmp = checked[i].paramsValue;
+          }
+          CmdWrite += checked[i].paramsIndex + "=" + tmp + "&";
         }
-        CmdWrite += checked[i].paramsIndex + "=" + tmp + "&";
+        console.log(CmdWrite);
+        var err = undefined;
+        RequestFromBoaWritePara(CmdWrite, err);
+      } else {
+        $(":checked").removeAttr("checked");
       }
-      console.log(CmdWrite);
-      var err = undefined;
-      RequestFromBoaWritePara(CmdWrite, err);
-    } else {
-      $(":checked").removeAttr("checked");
     }
-  });
+  );
 }
 
 function RowUpdate(index) {
@@ -113,25 +120,14 @@ function reload() {
   cacheDataArray = cacheData.split("&");
   console.log(cacheDataArray);
 
-  var SystemInfoRows = 0;
-  var AlarmInfoRows = 0;
-  var RadioConfigRows = 0;
-
   if (cacheDataParaListArray.length != cacheDataArray.length) {
-    $.messager.alert("Error", "参数列表不完整");
+    $.messager.alert("Error", "Parameter list incomplete");
   } else {
-    $.messager.alert("Success", "获取完整参数列表");
+    $.messager.alert("Success", "Get the full parameter list");
   }
 
   ParaListData2Params(cacheDataParaListArray, ParamsDataArray);
   ParaRead2Params(cacheDataArray, ParamsDataArray);
-
-  var StartParams = ParamsDataArray[1];
-  var EndParams = ParamsDataArray[ParamsDataArray.length - 1];
-  console.log("ReadFrom Boa ... ...");
-  console.log(StartParams);
-  console.log(EndParams);
-
   ParamsType();
 
   var TableTmp = undefined;
@@ -140,12 +136,27 @@ function reload() {
     TableTmp = SystemInfoArgs;
   } else if (TableType == "AlarmInfoTable") {
     TableTmp = AlarmInfoArgs;
-  } else if (TableType == "RadioConfigTable") {
-    TableTmp = RadioConfigArgs;
-  } else if (TableType == "CarrierConfigTable") {
-    TableTmp = CarrierConfigArgs;
+  } else if (TableType == "OptInfoTable") {
+    TableTmp = OptInfoArgs;
+  } else if (TableType == "NetConfigTable") {
+    TableTmp = NetWorkConfigArgs;
+  } else if (TableType == "AlarmConfigTable") {
+    TableTmp = AlarmConfigArgs;
+  } else if (TableType == "RadioConfigCommonTable") {
+    TableTmp = RadioConfigCommonArgs;
+  } else if (TableType == "RadioConfigOneTable") {
+    TableTmp = RadioConfigOneArgs;
+  } else if (TableType == "RadioConfigTwoTable") {
+    TableTmp = RadioConfigTwoArgs;
+  } else if (TableType == "RadioConfigThreeTable") {
+    TableTmp = RadioConfigThreeArgs;
+  } else if (TableType == "RadioConfigFourTable") {
+    TableTmp = RadioConfigFourArgs;
+  } else if (TableType == "CarrierConfigOneTable") {
+    TableTmp = CarrierConfigOneArgs;
+  } else if (TableType == "CarrierConfigTwoTable") {
+    TableTmp = CarrierConfigTwoArgs;
   }
-
   console.log(TableTmp);
   clearDataTable();
   DrawTable(TableTmp);
@@ -153,7 +164,7 @@ function reload() {
 
 function getChanges() {
   $.messager.show({
-    title: "已提交修改的数据",
+    title: "Modified data that has been submitted",
     height: 400,
     width: 800,
     msg: JSON.stringify(checked),

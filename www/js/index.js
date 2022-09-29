@@ -6,11 +6,66 @@ var cacheDataArray = new Array();
 
 var TableType = undefined;
 
-var SystemInfoArgs = new Array();
-var AlarmInfoArgs = new Array();
 var NetWorkConfigArgs = new Array();
-var RadioConfigArgs = new Array();
-var CarrierConfigArgs = new Array();
+var NetWorkConfigFilterIndex = [0x151, 0x152, 0x153];
+
+var SystemInfoArgs = new Array();
+var SystemFilterIndex = [0x0a, 0x0102, 0x21, 0x150, 0x0ffd];
+
+var AlarmInfoArgs = new Array();
+var AlarmFilterIndex = [0x0301, 0x0302, 0x5c, 0x5d, 0x5e, 0x5f, 0x030f];
+
+var AlarmConfigArgs = new Array();
+var AlarmConfigFilterIndex = [0x0201, 0x0202, 0x30, 0x31, 0x32, 0x33, 0x020f];
+
+var CarrierConfigOneArgs = new Array();
+var CarrierConfigOneFilterIndex = [0xdf00, 0xdf01, 0xdf11];
+
+var CarrierConfigTwoArgs = new Array();
+var CarrierConfigTwoFilterIndex = [0xdf02, 0xdf03, 0xdf13];
+
+var RadioConfigCommonArgs = new Array();
+var RadioConfigCommonFilterIndex = [
+  0x0c04, 0x0c05, 0xdf09, 0x5c0, 0x04a2, 0x0a51, 0x0c24,
+];
+
+var RadioConfigOneArgs = new Array();
+var RadioConfigOneFilterIndex = [
+  0x442, 0x443, 0x0502, 0x0c20, 0x0c25, 0x0b80, 0x0b84, 0x0b88, 0x0c00, 0xa100,
+  0xa104, 0xa150, 0xa160,
+];
+
+var RadioConfigTwoArgs = new Array();
+var RadioConfigTwoFilterIndex = [
+  0x444, 0x445, 0x0503, 0x0c21, 0x0c26, 0x0b81, 0x0b85, 0x0b89, 0x0c01, 0xa101,
+  0xa105, 0xa151, 0xa161,
+];
+
+var RadioConfigThreeArgs = new Array();
+var RadioConfigThreeFilterIndex = [
+  0x0c22, 0x0c27, 0x0b82, 0x0b86, 0x0b8a, 0x0c02, 0xa102, 0xa106, 0xa152,
+  0xa162,
+];
+
+var RadioConfigFourArgs = new Array();
+var RadioConfigFourFilterIndex = [
+  0x0c23, 0x0c28, 0x0b83, 0x0b87, 0x0b8b, 0x0c03, 0xa103, 0xa107, 0xa153,
+  0xa163,
+];
+
+var OptInfoArgs = new Array();
+var OptInfoFilterIndex = [
+  0x05a0, 0x05a1, 0x05a2, 0x05a3, 0x05b0, 0x05b1, 0x05b2, 0x05b3,
+];
+
+function FilterIndex(IndexArray, index) {
+  for (var i = 0; i < IndexArray.length; i++) {
+    if (index == IndexArray[i]) {
+      return true;
+    }
+  }
+  return false;
+}
 
 function ajaxPost(url_t, msg, func) {
   $.ajax({
@@ -22,7 +77,7 @@ function ajaxPost(url_t, msg, func) {
       func(data, status);
     },
     error: function (data, status) {
-      $.messager.alert("Error", "加载远程数据失败");
+      $.messager.alert("Error", "Load remote data failed");
     },
   });
 }
@@ -85,27 +140,44 @@ function clearCacheGlobData() {
 
 function ParamsType() {
   var tmp_index = undefined;
+  OptInfoArgs.length = 0;
   SystemInfoArgs.length = 0;
   AlarmInfoArgs.length = 0;
-  RadioConfigArgs.length = 0;
-  CarrierConfigArgs.length = 0;
+  AlarmConfigArgs.length = 0;
+  NetWorkConfigArgs.length = 0;
+  RadioConfigCommonArgs.length = 0;
+  RadioConfigFourArgs.length = 0;
+  RadioConfigOneArgs.length = 0;
+  RadioConfigTwoArgs.length = 0;
+  RadioConfigThreeArgs.length = 0;
+  CarrierConfigOneArgs.length = 0;
+  CarrierConfigTwoArgs.length = 0;
   for (var i = 0; i < ParamsDataArray.length; i++) {
     tmp_index = parseInt(ParamsDataArray[i].index);
-    if (
-      tmp_index <= 0x024 ||
-      (tmp_index >= 0x601 && tmp_index <= 0x607) ||
-      (tmp_index >= 0x101 && tmp_index <= 0x166)
-    ) {
+    if (FilterIndex(SystemFilterIndex, tmp_index)) {
       SystemInfoArgs.push(ParamsDataArray[i]);
-    } else if (
-      (tmp_index >= 0x200 && tmp_index <= 0x0300) ||
-      (tmp_index >= 0x30 && tmp_index <= 0x49)
-    ) {
+    } else if (FilterIndex(OptInfoFilterIndex, tmp_index)) {
+      OptInfoArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(AlarmFilterIndex, tmp_index)) {
       AlarmInfoArgs.push(ParamsDataArray[i]);
-    } else if (tmp_index >= 0x400 && tmp_index < 0xdf00) {
-      RadioConfigArgs.push(ParamsDataArray[i]);
-    } else if (tmp_index >= 0xdf00 && tmp_index <= 0xdf13) {
-      CarrierConfigArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(AlarmConfigFilterIndex, tmp_index)) {
+      AlarmConfigArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(RadioConfigCommonFilterIndex, tmp_index)) {
+      RadioConfigCommonArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(RadioConfigOneFilterIndex, tmp_index)) {
+      RadioConfigOneArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(RadioConfigTwoFilterIndex, tmp_index)) {
+      RadioConfigTwoArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(RadioConfigThreeFilterIndex, tmp_index)) {
+      RadioConfigThreeArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(RadioConfigFourFilterIndex, tmp_index)) {
+      RadioConfigFourArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(CarrierConfigOneFilterIndex, tmp_index)) {
+      CarrierConfigOneArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(CarrierConfigTwoFilterIndex, tmp_index)) {
+      CarrierConfigTwoArgs.push(ParamsDataArray[i]);
+    } else if (FilterIndex(NetWorkConfigFilterIndex, tmp_index)) {
+      NetWorkConfigArgs.push(ParamsDataArray[i]);
     }
   }
 }
@@ -113,9 +185,6 @@ function ParamsType() {
 var ParamsDataArray = new Array();
 
 $(function () {
-  var SystemInfoRows = 0;
-  var AlarmInfoRows = 0;
-  var RadioConfigRows = 0;
   clearCacheGlobData();
   clearDataTable();
   RequestFromBoaParaList();
@@ -127,9 +196,9 @@ $(function () {
   console.log(cacheDataArray);
 
   if (cacheDataParaListArray.length != cacheDataArray.length) {
-    $.messager.alert("Error", "参数列表不完整");
+    $.messager.alert("Error", "Parameter list incomplete");
   } else {
-    $.messager.alert("Success", "获取完整参数列表");
+    $.messager.alert("Success", "Get the full parameter list");
   }
 
   for (var i = 0; i < cacheDataArray.length; i++) {
@@ -141,16 +210,7 @@ $(function () {
 
   ParamsType();
 
-  console.log(ParamsDataArray);
-
-  console.log("System Info ... ...\n");
-  console.log(SystemInfoArgs);
-
-  console.log("Alarms Info ... ...\n");
-  console.log(AlarmInfoArgs);
-
-  console.log("Radio info");
-  console.log(RadioConfigArgs);
+  // console.log(ParamsDataArray);
 
   var DeviceInfo = new Object();
   DeviceInfo.SystemInfo = new CenterBlockClass(
@@ -165,30 +225,80 @@ $(function () {
     AlarmInfoArgs
   );
 
+  DeviceInfo.OptInfo = new CenterBlockClass(
+    "a#OptInfo",
+    "OptInfoTable",
+    OptInfoArgs
+  );
+
   var DeviceConfig = new Object();
   DeviceConfig.NetWorkConfig = new CenterBlockClass(
     "a#NetWorkConfig",
     "NetConfigTable",
     NetWorkConfigArgs
   );
-  DeviceConfig.RadioConfig = new CenterBlockClass(
-    "a#RadioConfig",
-    "RadioConfigTable",
-    RadioConfigArgs
+
+  DeviceConfig.AlarmConfig = new CenterBlockClass(
+    "a#AlarmConfig",
+    "AlarmConfigTable",
+    AlarmConfigArgs
   );
 
-  DeviceConfig.CarrierConfig = new CenterBlockClass(
-    "a#CarrierConfig",
-    "CarrierConfigTable",
-    CarrierConfigArgs
+  DeviceConfig.RadioConfigCommon = new CenterBlockClass(
+    "a#RadioConfigCommon",
+    "RadioConfigCommonTable",
+    RadioConfigCommonArgs
+  );
+
+  DeviceConfig.RadioConfigOne = new CenterBlockClass(
+    "a#RadioConfigOne",
+    "RadioConfigOneTable",
+    RadioConfigOneArgs
+  );
+
+  DeviceConfig.RadioConfigTwo = new CenterBlockClass(
+    "a#RadioConfigTwo",
+    "RadioConfigTwoTable",
+    RadioConfigTwoArgs
+  );
+
+  DeviceConfig.RadioConfigThree = new CenterBlockClass(
+    "a#RadioConfigThree",
+    "RadioConfigThreeTable",
+    RadioConfigThreeArgs
+  );
+
+  DeviceConfig.RadioConfigFour = new CenterBlockClass(
+    "a#RadioConfigFour",
+    "RadioConfigFourTable",
+    RadioConfigFourArgs
+  );
+
+  DeviceConfig.CarrierConfigOne = new CenterBlockClass(
+    "a#CarrierConfigOne",
+    "CarrierConfigOneTable",
+    CarrierConfigOneArgs
+  );
+
+  DeviceConfig.CarrierConfigTwo = new CenterBlockClass(
+    "a#CarrierConfigTwo",
+    "CarrierConfigTwoTable",
+    CarrierConfigTwoArgs
   );
 
   var CenterBlockEvent = [
     DeviceInfo.SystemInfo,
     DeviceInfo.AlarmInfo,
+    DeviceInfo.OptInfo,
     DeviceConfig.NetWorkConfig,
-    DeviceConfig.RadioConfig,
-    DeviceConfig.CarrierConfig,
+    DeviceConfig.AlarmConfig,
+    DeviceConfig.RadioConfigCommon,
+    DeviceConfig.RadioConfigOne,
+    DeviceConfig.RadioConfigTwo,
+    DeviceConfig.RadioConfigThree,
+    DeviceConfig.RadioConfigFour,
+    DeviceConfig.CarrierConfigOne,
+    DeviceConfig.CarrierConfigTwo,
   ];
 
   for (i = 0; i < CenterBlockEvent.length; i++) {
