@@ -18,10 +18,19 @@ class CenterBlockClass {
   }
 }
 
+var FirstTmp = "Home";
 function setCenterBlockEvent(CenterBlockClass) {
   $(CenterBlockClass.index).click(function () {
     var txt = $(this).text();
-    $("#CenterBlock").panel({ title: txt });
+    $("#HomeIndex").tabs("select", FirstTmp);
+    var tab = $("#HomeIndex").tabs("getSelected");
+    $("#HomeIndex").tabs("update", {
+      tab: tab,
+      options: {
+        title: txt,
+      },
+    });
+    FirstTmp = txt;
     clearDataTable();
     TableType = CenterBlockClass.type;
     DrawTable(CenterBlockClass.args);

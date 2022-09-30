@@ -32,25 +32,25 @@ var RadioConfigCommonFilterIndex = [
 var RadioConfigOneArgs = new Array();
 var RadioConfigOneFilterIndex = [
   0x442, 0x443, 0x0502, 0x0c20, 0x0c25, 0x0b80, 0x0b84, 0x0b88, 0x0c00, 0xa100,
-  0xa104, 0xa150, 0xa160,
+  0xa104, 0xa150, 0xa160, 0xa10,
 ];
 
 var RadioConfigTwoArgs = new Array();
 var RadioConfigTwoFilterIndex = [
   0x444, 0x445, 0x0503, 0x0c21, 0x0c26, 0x0b81, 0x0b85, 0x0b89, 0x0c01, 0xa101,
-  0xa105, 0xa151, 0xa161,
+  0xa105, 0xa151, 0xa161, 0xa11,
 ];
 
 var RadioConfigThreeArgs = new Array();
 var RadioConfigThreeFilterIndex = [
   0x0c22, 0x0c27, 0x0b82, 0x0b86, 0x0b8a, 0x0c02, 0xa102, 0xa106, 0xa152,
-  0xa162,
+  0xa162, 0x0504, 0xa12,
 ];
 
 var RadioConfigFourArgs = new Array();
 var RadioConfigFourFilterIndex = [
   0x0c23, 0x0c28, 0x0b83, 0x0b87, 0x0b8b, 0x0c03, 0xa103, 0xa107, 0xa153,
-  0xa163,
+  0xa163, 0x0505, 0xa13,
 ];
 
 var OptInfoArgs = new Array();
@@ -74,10 +74,11 @@ function ajaxPost(url_t, msg, func) {
     data: msg,
     async: false,
     success: function (data, status) {
+      $.messager.alert("Successful", "Operator Successful");
       func(data, status);
     },
     error: function (data, status) {
-      $.messager.alert("Error", "Load remote data failed");
+      $.messager.alert("Failed", "Operator Failed");
     },
   });
 }
@@ -207,6 +208,14 @@ $(function () {
 
   ParaListData2Params(cacheDataParaListArray, ParamsDataArray);
   ParaRead2Params(cacheDataArray, ParamsDataArray);
+
+  for (var i = 0; i < ParamsDataArray.length; i++) {
+    if (ParamsDataArray[i].type != "str" && ParamsDataArray[i].type != "dstr") {
+      ParamsDataArray[i].value =
+        parseFloat(ParamsDataArray[i].value) /
+        parseFloat(ParamsDataArray[i].coff);
+    }
+  }
 
   ParamsType();
 

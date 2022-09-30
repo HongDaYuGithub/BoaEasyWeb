@@ -128,6 +128,13 @@ function reload() {
 
   ParaListData2Params(cacheDataParaListArray, ParamsDataArray);
   ParaRead2Params(cacheDataArray, ParamsDataArray);
+  for (var i = 0; i < ParamsDataArray.length; i++) {
+    if (ParamsDataArray[i].type != "str" && ParamsDataArray[i].type != "dstr") {
+      ParamsDataArray[i].value =
+        parseFloat(ParamsDataArray[i].value) /
+        parseFloat(ParamsDataArray[i].coff);
+    }
+  }
   ParamsType();
 
   var TableTmp = undefined;
@@ -157,6 +164,7 @@ function reload() {
   } else if (TableType == "CarrierConfigTwoTable") {
     TableTmp = CarrierConfigTwoArgs;
   }
+  //coef calc for value
   console.log(TableTmp);
   clearDataTable();
   DrawTable(TableTmp);
