@@ -223,94 +223,114 @@ $(function () {
 
   var DeviceInfo = new Object();
   DeviceInfo.SystemInfo = new CenterBlockClass(
-    "a#SystemInfo",
+    "#SystemInfo",
     "SystemInfoTable",
     SystemInfoArgs
   );
 
   DeviceInfo.AlarmInfo = new CenterBlockClass(
-    "a#AlarmInfo",
+    "#AlarmInfo",
     "AlarmInfoTable",
     AlarmInfoArgs
   );
 
   DeviceInfo.OptInfo = new CenterBlockClass(
-    "a#OptInfo",
+    "#OptInfo",
     "OptInfoTable",
     OptInfoArgs
   );
 
   var DeviceConfig = new Object();
   DeviceConfig.NetWorkConfig = new CenterBlockClass(
-    "a#NetWorkConfig",
+    "#NetWorkConfig",
     "NetConfigTable",
     NetWorkConfigArgs
   );
 
   DeviceConfig.AlarmConfig = new CenterBlockClass(
-    "a#AlarmConfig",
+    "#AlarmConfig",
     "AlarmConfigTable",
     AlarmConfigArgs
   );
 
   DeviceConfig.RadioConfigCommon = new CenterBlockClass(
-    "a#RadioConfigCommon",
+    "#RadioConfigCommon",
     "RadioConfigCommonTable",
     RadioConfigCommonArgs
   );
 
   DeviceConfig.RadioConfigOne = new CenterBlockClass(
-    "a#RadioConfigOne",
+    "#RadioConfigOne",
     "RadioConfigOneTable",
     RadioConfigOneArgs
   );
 
   DeviceConfig.RadioConfigTwo = new CenterBlockClass(
-    "a#RadioConfigTwo",
+    "#RadioConfigTwo",
     "RadioConfigTwoTable",
     RadioConfigTwoArgs
   );
 
   DeviceConfig.RadioConfigThree = new CenterBlockClass(
-    "a#RadioConfigThree",
+    "#RadioConfigThree",
     "RadioConfigThreeTable",
     RadioConfigThreeArgs
   );
 
   DeviceConfig.RadioConfigFour = new CenterBlockClass(
-    "a#RadioConfigFour",
+    "#RadioConfigFour",
     "RadioConfigFourTable",
     RadioConfigFourArgs
   );
 
   DeviceConfig.CarrierConfigOne = new CenterBlockClass(
-    "a#CarrierConfigOne",
+    "#CarrierConfigOne",
     "CarrierConfigOneTable",
     CarrierConfigOneArgs
   );
 
   DeviceConfig.CarrierConfigTwo = new CenterBlockClass(
-    "a#CarrierConfigTwo",
+    "#CarrierConfigTwo",
     "CarrierConfigTwoTable",
     CarrierConfigTwoArgs
   );
 
-  var CenterBlockEvent = [
-    DeviceInfo.SystemInfo,
-    DeviceInfo.AlarmInfo,
-    DeviceInfo.OptInfo,
-    DeviceConfig.NetWorkConfig,
-    DeviceConfig.AlarmConfig,
-    DeviceConfig.RadioConfigCommon,
-    DeviceConfig.RadioConfigOne,
-    DeviceConfig.RadioConfigTwo,
-    DeviceConfig.RadioConfigThree,
-    DeviceConfig.RadioConfigFour,
-    DeviceConfig.CarrierConfigOne,
-    DeviceConfig.CarrierConfigTwo,
-  ];
+  var CenterBlockEvent = new Array();
+  CenterBlockEvent["SystemInfo"] = DeviceInfo.SystemInfo;
+  CenterBlockEvent["AlarmInfo"] = DeviceInfo.AlarmInfo;
+  CenterBlockEvent["OptInfo"] = DeviceInfo.OptInfo;
+  CenterBlockEvent["NetWorkConfig"] = DeviceConfig.NetWorkConfig;
+  CenterBlockEvent["AlarmConfig"] = DeviceConfig.AlarmConfig;
+  CenterBlockEvent["RadioConfigCommon"] = DeviceConfig.RadioConfigCommon;
+  CenterBlockEvent["RadioConfigOne"] = DeviceConfig.RadioConfigOne;
+  CenterBlockEvent["RadioConfigTwo"] = DeviceConfig.RadioConfigTwo;
+  CenterBlockEvent["RadioConfigThree"] = DeviceConfig.RadioConfigThree;
+  CenterBlockEvent["RadioConfigFour"] = DeviceConfig.RadioConfigFour;
+  CenterBlockEvent["CarrierConfigOne"] = DeviceConfig.CarrierConfigOne;
+  CenterBlockEvent["CarrierConfigTwo"] = DeviceConfig.CarrierConfigTwo;
 
-  for (i = 0; i < CenterBlockEvent.length; i++) {
-    setCenterBlockEvent(CenterBlockEvent[i]);
-  }
+  $("#tt").tree({
+    onClick: function (node) {
+      var index = node.text;
+      var ack_index = index.split('"');
+      var txt = ack_index[2];
+      $("#HomeIndex").tabs("select", FirstTmp);
+      var tab = $("#HomeIndex").tabs("getSelected");
+      $("#HomeIndex").tabs("update", {
+        tab: tab,
+        options: {
+          title: txt,
+        },
+      });
+      do {
+        if (ack_index[1] == undefined) {
+          break;
+        }
+        FirstTmp = txt;
+        clearDataTable();
+        TableType = CenterBlockEvent[ack_index[1]].type;
+        DrawTable(CenterBlockEvent[ack_index[1]].args);
+      } while (0);
+    },
+  });
 });
