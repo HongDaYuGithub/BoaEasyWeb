@@ -36,3 +36,4 @@ function setCenterBlockEvent(CenterBlockClass) {
     DrawTable(CenterBlockClass.args);
   });
 }
+

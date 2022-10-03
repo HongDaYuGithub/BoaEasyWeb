@@ -89,6 +89,51 @@ function RequestFromBoaParaList() {
   });
 }
 
+function ajaxJsonPost(url_t, msg, func) {
+  $.ajax({
+    url: url_t,
+    type: "POST", //对数据的请求指令使用post的请求方式
+    data: msg,
+    async: false,
+    dataType: json,
+    success: function (data, status) {
+      $.messager.alert("Successful", "Operator Successful");
+      func(data, status);
+    },
+    error: function (data, status) {
+      $.messager.alert("Failed", "Operator Failed");
+    },
+  });
+}
+
+var DevList = undefined;
+
+function RequestDeviceList() {
+  ajaxPost(
+    "cgi-bin/dru.cgi",
+    "cmd=device_list&nodata",
+    function (data, status) {
+      DevList = data;
+    }
+  );
+}
+
+function TreeNodeAdd() {
+  var data = [{ text: "DeviceList", children: [{ text: "LocalDevice" }] }];
+  var data_leaf = data[0].children;
+  RequestDeviceList();
+  if (DevList != undefined) {
+    console.log(DevList);
+    let tmp = DevList.split("&");
+    console.log(tmp);
+    for (var i = 0; i < tmp.length; i++) {
+      data_leaf.push(tmp[i]);
+    }
+  }
+  // init tree for every node
+  $("#ptt").tree({ data: data });
+}
+
 function RequestFromBoaReadPara() {
   ajaxPost("cgi-bin/dru.cgi", "cmd=read&nodata", function (data, status) {
     cacheData = data;
@@ -186,6 +231,7 @@ function ParamsType() {
 var ParamsDataArray = new Array();
 
 $(function () {
+  TreeNodeAdd();
   clearCacheGlobData();
   clearDataTable();
   RequestFromBoaParaList();
@@ -219,7 +265,7 @@ $(function () {
 
   ParamsType();
 
-  // console.log(ParamsDataArray);
+  console.log(ParamsDataArray);
 
   var DeviceInfo = new Object();
   DeviceInfo.SystemInfo = new CenterBlockClass(
@@ -331,6 +377,20 @@ $(function () {
         TableType = CenterBlockEvent[ack_index[1]].type;
         DrawTable(CenterBlockEvent[ack_index[1]].args);
       } while (0);
+    },
+  });
+
+  $("#ptt").tree({
+    onClick: function (node) {
+      var index = node.text;
+      if (!$("#devTab").tabs("exists", index)) {
+        $("#devTab").tabs("add", {
+          title: index,
+          href: "http://" + index,
+          selected: true,
+          closable: true,
+        });
+      } else $("#devTab").tabs("select", index);
     },
   });
 });

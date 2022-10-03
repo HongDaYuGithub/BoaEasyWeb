@@ -2,94 +2,112 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<title>Device Dashboard</title>
-	<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="www/demo.css">
-	<script type="text/javascript" src="jquery.min.js"></script>
-	<script type="text/javascript" src="jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="www/js/dataGrid.js"></script>
-	<script type="text/javascript" src="www/js/cgiOperator.js"></script>
-	<script type="text/javascript" src="www/js/index.js"></script>
+    <meta charset="UTF-8">
+    <title>Device Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="themes/gray/easyui.css">
+    <link rel="stylesheet" type="text/css" href="themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="www/demo.css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="www/js/dataGrid.js"></script>
+    <script type="text/javascript" src="www/js/cgiOperator.js"></script>
+    <script type="text/javascript" src="www/js/index.js"></script>
 </head>
 
-<body >
-	<div id="tb" style="height:auto">
-					<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true"
-						onclick="reload()">Refresh</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
-						onclick="edit()">Save</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true"
-						onclick="cancel()">Cancel</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
-						onclick="getChanges()">View changes</a>
-				</div>
-	<div class="easyui-layout" style="width:1280px;height:600px;">
-	<div data-options="region:'west',title:'Menu directory'" style="width:250px;padding:10px;">
-		<ul id="tt" class="easyui-tree">
-			<li data-options="state:'closed'">
-				<span>Device Information</span>
-				<ul>
-					<li><a id="SystemInfo">system </a></li>
-					<li><a id="OptInfo">optical </a></li>
-					<li><a id="AlarmInfo">alarm </a></li>
-				</ul>
-			</li>
-			<li data-options="state:'closed'">
-				<span>Device Configuration</span>
-				<ul>
-					<li><a id="NetWorkConfig">network </a></li>
-					<li><a id="AlarmConfig">alarm</a></li>
-					<li data-options="state:'closed'">
-					<span>RF configuration</span>
-					<ul>
-						<li><a id="RadioConfigCommon">RF GM </a></li>
-						<li><a id="RadioConfigOne">Channel 1 </a></li>
-						<li><a id="RadioConfigTwo">Channel 2 </a></li>
-						<li><a id="RadioConfigThree">Channel 3 </a></li>
-						<li><a id="RadioConfigFour">Channel 4 </a></li>
-					</ul>
-					</li>
-					<li data-options="state:'closed'">
-					<span>Carrier configuration</span>
-					<ul>
-						<li><a id="CarrierConfigOne">Carrier 1</a></li>
-						<li><a id="CarrierConfigTwo">Carrier 2</a></li>
-					</ul>
-					</li>
-				</ul>
-			</li>
-		</ul>
-	</div>
-	<div id="CenterBlock" data-options="region:'center',title:'Access Unit Equipment'">
-				<div id="HomeIndex" class="easyui-tabs" style="width:auto;height:auto">
-				<div  title="Home" style="padding:10px">
-				<table id="dg" class="easyui-datagrid" style="width:auto;height:auto" data-options="
+<body>
+    <div class="easyui-layout" fit="true">
+        <div region="west" split="true" style="width:200px;">
+            <ul id="ptt" class="easyui-tree">
+
+            </ul>
+        </div>
+        <div region="center" border="false" border="false">
+            <div id="devTab" class="easyui-tabs" fit="true">
+                <div title="LocalDevice" style="padding:10px;">
+                    <div id="tb" style="height:auto">
+                        <a href="javascript:void(0)" class="easyui-linkbutton"
+                            data-options="iconCls:'icon-reload',plain:true" onclick="reload()">Refresh</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton"
+                            data-options="iconCls:'icon-save',plain:true" onclick="edit()">Save</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton"
+                            data-options="iconCls:'icon-undo',plain:true" onclick="cancel()">Cancel</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton"
+                            data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">View changes</a>
+
+                    </div>
+                    <div class="easyui-layout" style="width:1300px;height:600px;" fit="true">
+                        <div data-options="region:'west',title:'Menu directory'" style="width:250px;" border="false"
+                            border="false">
+                            <ul id="tt" class="easyui-tree">
+                                <li data-options="state:'closed'">
+                                    <span>Device Information</span>
+                                    <ul>
+                                        <li><a id="SystemInfo">system </a></li>
+                                        <li><a id="OptInfo">optical </a></li>
+                                        <li><a id="AlarmInfo">alarm </a></li>
+                                    </ul>
+                                </li>
+                                <li data-options="state:'closed'">
+                                    <span>Device Configuration</span>
+                                    <ul>
+                                        <li><a id="NetWorkConfig">network </a></li>
+                                        <li><a id="AlarmConfig">alarm</a></li>
+                                        <li data-options="state:'closed'">
+                                            <span>RF configuration</span>
+                                            <ul>
+                                                <li><a id="RadioConfigCommon">RF GM </a></li>
+                                                <li><a id="RadioConfigOne">Channel 1 </a></li>
+                                                <li><a id="RadioConfigTwo">Channel 2 </a></li>
+                                                <li><a id="RadioConfigThree">Channel 3 </a></li>
+                                                <li><a id="RadioConfigFour">Channel 4 </a></li>
+                                            </ul>
+                                        </li>
+                                        <li data-options="state:'closed'">
+                                            <span>Carrier configuration</span>
+                                            <ul>
+                                                <li><a id="CarrierConfigOne">Carrier 1</a></li>
+                                                <li><a id="CarrierConfigTwo">Carrier 2</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="CenterBlock" data-options="region:'center',title:'Access Unit Equipment'">
+                            <div id="HomeIndex" class="easyui-tabs" style="width:auto;height:auto">
+                                <div title="Home" style="padding:10px">
+                                    <table id="dg" class="easyui-datagrid" style="width:auto;height:auto" data-options="
 										checkOnSelect:false,
 										selectOnCheck:false,
 										onClickCell: onClickCell,
 									">
-					<thead>
-						<tr>
-							<th data-options="field:'selectRows',width:40,align:'center',checkbox:true">
-							</th>
-					<th data-options="field:'paramsIndex',width:80,align:'left'">index</th>
+                                        <thead>
+                                            <tr>
+                                                <th
+                                                    data-options="field:'selectRows',width:40,align:'center',checkbox:true">
+                                                </th>
+                                                <th data-options="field:'paramsIndex',width:80,align:'left'">index</th>
 
-					<th data-options="field:'paramsName',width:240,align:'left'">name</th>
-					<th
-						data-options="field:'paramsCoff',width:80,align:'left',editor:{type:'numberbox',options:{precision:2}}">
-						coef</th>
-					<th data-options="field:'paramsAttr',width:80,align:'left'">attr</th>
-					<th data-options="field:'paramsType',width:80,align:'left'">type</th>
-					<th data-options="field:'paramsValue',width:253,align:'left',editor:{type:'textbox'}">value</th>
-				</tr>
-			</thead>
-		</table>
-				</div>
-				</div>
-	</div>
-	</div>
+                                                <th data-options="field:'paramsName',width:240,align:'left'">name</th>
+                                                <th
+                                                    data-options="field:'paramsCoff',width:80,align:'left',editor:{type:'numberbox',options:{precision:2}}">
+                                                    coef</th>
+                                                <th data-options="field:'paramsAttr',width:80,align:'left'">attr</th>
+                                                <th data-options="field:'paramsType',width:80,align:'left'">type</th>
+                                                <th
+                                                    data-options="field:'paramsValue',width:253,align:'left',editor:{type:'textbox'}">
+                                                    value</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
